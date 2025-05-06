@@ -1,0 +1,48 @@
+# See http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+spring:
+  # Datasource configuration  
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+
+# JPA configuration     
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+ 
+# Jackson configuration        
+  jackson:
+    default-property-inclusion: non-null
+
+# Kafka configuration for change log topics
+  cloud:
+    stream:
+      kafka:
+        binder:
+          replicationFactor: 1
+        default:
+          consumer:
+            topic:
+              properties:
+                retention.ms: 86400000
+          producer:
+            topic:
+              properties:
+                retention.ms: 86400000
+
+# Server encoding configuration  
+server:
+  port: ${SERVER_PORT}
+
+# Aggregation processor configuration
+# NOTE: Please use name as the topic suffix, example: 
+# topic name is: dcentriq.aggregation.one_minute_telem.json
+aggregate:
+  processor:
+    windows:
+      duration: # milliseconds
+        one_minute_telem: 60000 
+        fifteen_minute_telem: 900000
+        one_hour_telem: 3600000
+       
